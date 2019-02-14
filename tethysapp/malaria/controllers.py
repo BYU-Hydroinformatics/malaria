@@ -1,74 +1,63 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from tethys_sdk.gizmos import Button
+from tethys_sdk.gizmos import SelectInput, RangeSlider
+import datetime, os
+from .model import gldas_variables
 
 @login_required()
 def home(request):
     """
     Controller for the app home page.
     """
-    save_button = Button(
-        display_text='',
-        name='save-button',
-        icon='glyphicon glyphicon-floppy-disk',
-        style='success',
-        attributes={
-            'data-toggle':'tooltip',
-            'data-placement':'top',
-            'title':'Save'
-        }
+    # Get the options for the GLDAS Variables
+    variables = gldas_variables()
+    variable_opts = []
+    for key in sorted(variables.keys()):
+        tuple1 = (key, variables[key])
+        variable_opts.append(tuple1)
+    del tuple1, variables
+
+    # Get the options for the available dates
+    dates = os.listdir(os.path.join('/Users/rileyhales/thredds/malaria/coords', ''))
+    date_opts = []
+    for i in range(len(dates)):
+        if dates[i].startswith('.'):
+            continue
+        date = dates[i].replace('LIS_HIST_', '').replace('.nc', '')
+        tmp = datetime.datetime.strptime(date, '%Y%m%d')
+        date_opts.append((datetime.datetime.strftime(tmp, '%b %d %Y'), date))
+        date_opts.sort()
+    del dates, tmp
+
+    variables = SelectInput(
+        display_text='Pick a Variable',
+        name='variables',
+        multiple=False,
+        options=variable_opts,
+        initial=['Air Temperature'],
     )
 
-    edit_button = Button(
-        display_text='',
-        name='edit-button',
-        icon='glyphicon glyphicon-edit',
-        style='warning',
-        attributes={
-            'data-toggle':'tooltip',
-            'data-placement':'top',
-            'title':'Edit'
-        }
+    dates = SelectInput(
+        display_text='Date Selection',
+        name='dates',
+        multiple=False,
+        options=date_opts,
+        initial=[date_opts[0]],
     )
 
-    remove_button = Button(
-        display_text='',
-        name='remove-button',
-        icon='glyphicon glyphicon-remove',
-        style='danger',
-        attributes={
-            'data-toggle':'tooltip',
-            'data-placement':'top',
-            'title':'Remove'
-        }
-    )
-
-    previous_button = Button(
-        display_text='Previous',
-        name='previous-button',
-        attributes={
-            'data-toggle':'tooltip',
-            'data-placement':'top',
-            'title':'Previous'
-        }
-    )
-
-    next_button = Button(
-        display_text='Next',
-        name='next-button',
-        attributes={
-            'data-toggle':'tooltip',
-            'data-placement':'top',
-            'title':'Next'
-        }
+    opacity = RangeSlider(
+        display_text='Layer Opacity',
+        name='opacity',
+        min=.4,
+        max=1,
+        step=.05,
+        initial=.8,
     )
 
     context = {
-        'save_button': save_button,
-        'edit_button': edit_button,
-        'remove_button': remove_button,
-        'previous_button': previous_button,
-        'next_button': next_button
+        'variables': variables,
+        'dates': dates,
+        'opacity': opacity,
     }
 
     return render(request, 'malaria/home.html', context)

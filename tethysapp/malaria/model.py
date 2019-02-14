@@ -1,1 +1,4 @@
-# Put your persistent store models in this file
+def gldas_variables():
+    return {
+        'Water Evaporation Flux': 'Evap_tavg',
+        }
