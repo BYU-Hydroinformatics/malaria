@@ -1,4 +1,5 @@
 from tethys_sdk.base import TethysAppBase, url_map_maker
+from tethys_sdk.app_settings import CustomSetting
 
 
 class Malaria(TethysAppBase):
@@ -32,3 +33,20 @@ class Malaria(TethysAppBase):
         )
 
         return url_maps
+
+    def custom_settings(self):
+        settings = (
+            CustomSetting(
+                name='datadirpath',
+                type=CustomSetting.TYPE_STRING,
+                description='Path to the DIRECTORY of netCDF data for this app. ex ~/Users/rileyhales/thredds/malaria',
+                required=True,
+            ),
+            CustomSetting(
+                name='threddsurl',
+                type=CustomSetting.TYPE_STRING,
+                description='URL of the thredds wms for this app\'s data. ex byu.edu/thredds/wms/',
+                required=True,
+            ),
+        )
+        return settings

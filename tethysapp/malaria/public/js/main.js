@@ -3,7 +3,7 @@ $(document).ready(function() {
     function map() {
         // create the map
         return L.map('map', {
-            zoom: 5,
+            zoom: 5.25,
             minZoom: 1.25,
             boxZoom: true,
             maxBounds: L.latLngBounds(L.latLng(-100.0, -270.0), L.latLng(100.0, 270.0)),
@@ -19,7 +19,7 @@ $(document).ready(function() {
     }
 
     function newLayer() {
-        let wmsurl = 'http://127.0.0.1:7000/thredds/wms/testAll/malaria/coords/LIS_HIST_' + $("#dates").val() + '.nc';
+        let wmsurl = wmsbase + $("#dates").val() + '.nc';
         return wmsLayer = L.tileLayer.wms(wmsurl, {
             layers: $("#variables").val(),
             // useCache: true,
@@ -43,9 +43,14 @@ $(document).ready(function() {
         mapObj.removeControl(controlsObj);
     }
 
+    function getThreddswms(){
+        return 'http://127.0.0.1:7000/thredds/wms/testAll/malaria/LIS_HIST_'
+    }
+
     ////////////////////////////////////////////////////////////////////////  INITIALIZE ON DOCUMENT READY
 
     //  Load initial map data as soon as the page is ready
+    var wmsbase = getThreddswms();
     var mapObj = map();
     var basemapObj = basemaps();
     var layerObj = newLayer();
