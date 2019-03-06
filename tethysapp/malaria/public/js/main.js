@@ -1,3 +1,19 @@
+// Getting the csrf token
+let csrftoken = Cookies.get('csrftoken');
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    }
+});
+
+
+
 $(document).ready(function() {
     ////////////////////////////////////////////////////////////////////////  FUNCTIONS
     function map() {
@@ -28,8 +44,8 @@ $(document).ready(function() {
             transparent: true,
             opacity: $("#opacity").val(),
             BGCOLOR: '0x000000',
-            // styles: 'boxfill/' + color,
-            // colorscalerange: min_bnd + ',' + max_bnd,
+            styles: 'boxfill/' + $('#colors').val(),
+            colorscalerange: bounds[$("#variables").val()],
         }).addTo(mapObj);
     }
 
@@ -43,8 +59,28 @@ $(document).ready(function() {
         mapObj.removeControl(controlsObj);
     }
 
+    function newLegend() {
+        url = wmsbase + $("#dates").val() + '.nc' + "?REQUEST=GetLegendGraphic&LAYER=" + $("#variables").val() + "&PALETTE=" + $('#colors').val() + "&COLORSCALERANGE=" + bounds[$("#variables").val()];
+        html = '<img src="' + url + '" alt="legend" style="width:50%; height:325px;">';
+        $("#legend").html(html);
+    }
+
     function getThreddswms(){
-        return 'http://127.0.0.1:7000/thredds/wms/testAll/malaria/LIS_HIST_'
+        $.ajax({
+            url:'/apps/malaria/ajax/customsettings/',
+            async: false,
+            data: '',
+            dataType: 'json',
+            contentType: "application/json",
+            method: 'POST',
+            success: function(result) {
+                console.log(result);
+                wmsbase = result['threddsurl'] + 'LIS_HIST_';
+                return wmsbase;
+                },
+            });
+        return wmsbase;
+        // return 'http://127.0.0.1:7000/thredds/wms/testAll/malaria/LIS_HIST_'
     }
 
     ////////////////////////////////////////////////////////////////////////  INITIALIZE ON DOCUMENT READY
@@ -55,6 +91,7 @@ $(document).ready(function() {
     var basemapObj = basemaps();
     var layerObj = newLayer();
     var controlsObj = makeControls();
+    newLegend();
 
     ////////////////////////////////////////////////////////////////////////  EVENT LISTENERS
 
@@ -63,17 +100,26 @@ $(document).ready(function() {
         clearMap();
         layerObj = newLayer();
         controlsObj = makeControls();
+        newLegend();
     });
 
     $("#variables").change(function () {
         clearMap();
         layerObj = newLayer();
         controlsObj = makeControls();
+        newLegend();
     });
 
     $("#opacity").change(function () {
         layerObj.setOpacity($('#opacity').val());
-        });
+    });
+
+    $('#colors').change(function () {
+        clearMap();
+        layerObj = newLayer();
+        controlsObj = makeControls();
+        newLegend();
+    });
 
 
 });

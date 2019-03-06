@@ -1,8 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from tethys_sdk.gizmos import SelectInput, RangeSlider
-import datetime, os
-from .model import gldas_variables, available_dates
+from .model import gldas_variables, available_dates, wms_colors
 
 @login_required()
 def home(request):
@@ -17,6 +16,7 @@ def home(request):
         variable_opts.append(tuple1)
     del tuple1, variables
     date_opts = available_dates()
+    color_opts = wms_colors()
 
     variables = SelectInput(
         display_text='Pick a Variable',
@@ -43,10 +43,19 @@ def home(request):
         initial=.8,
     )
 
+    colors = SelectInput(
+        display_text='Pick a Color',
+        name='colors',
+        multiple=False,
+        options=color_opts,
+        initial=['Red-Blue'],
+    )
+
     context = {
         'variables': variables,
         'dates': dates,
         'opacity': opacity,
+        'colors': colors,
     }
 
     return render(request, 'malaria/home.html', context)

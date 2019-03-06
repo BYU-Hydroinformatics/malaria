@@ -30,6 +30,11 @@ class Malaria(TethysAppBase):
                 url='malaria',
                 controller='malaria.controllers.home'
             ),
+            UrlMap(
+                name='customsettings',
+                url='malaria/ajax/customsettings',
+                controller='malaria.controllersAJAX.customsettings'
+            ),
         )
 
         return url_maps

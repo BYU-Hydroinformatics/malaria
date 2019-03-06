@@ -26,13 +26,14 @@ def gldas_variables():
         'Wind speed': 'Wind_f_tavg'
     }
 
+
 def available_dates():
     """
     gets the available dates to show on the map based on the path to data Custom Setting
     """
     import os, datetime
     from .app import Malaria as App
-    dates = os.listdir(os.path.join(App.get_custom_setting('datadirpath'), ''))
+    dates = os.listdir(App.get_custom_setting('datadirpath'))
     date_opts = []
     for i in range(len(dates)):
         if dates[i].startswith('.'):
@@ -44,3 +45,21 @@ def available_dates():
     del dates, tmp
 
     return date_opts
+
+
+def wms_colors():
+    """
+    Color options usable by thredds wms
+    """
+    return [
+        ('SST-36', 'sst_36'),
+        ('Greyscale', 'greyscale'),
+        ('Rainbox', 'rainbow'),
+        ('OCCAM', 'occam'),
+        ('OCCAM Pastel', 'occam_pastel-30'),
+        ('Red-Blue', 'redblue'),
+        ('NetCDF Viewer', 'ncview'),
+        ('ALG', 'alg'),
+        ('ALG 2', 'alg2'),
+        ('Ferret', 'ferret'),
+        ]
