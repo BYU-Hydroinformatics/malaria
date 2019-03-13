@@ -46,12 +46,14 @@ class Malaria(TethysAppBase):
                 type=CustomSetting.TYPE_STRING,
                 description='Path to the DIRECTORY of netCDF data for this app. ex ~/Users/rileyhales/thredds/malaria',
                 required=True,
+                # /opt/tomcat/content/thredds/public/testdata/malaria/ on tethys.byu.edu
             ),
             CustomSetting(
                 name='threddsurl',
                 type=CustomSetting.TYPE_STRING,
                 description='URL of the thredds wms for this app\'s data. ex byu.edu/thredds/wms/',
                 required=True,
+                # https://tethys.byu.edu/thredds/wms/testAll/malaria/
             ),
         )
         return settings

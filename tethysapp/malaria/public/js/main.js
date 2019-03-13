@@ -13,7 +13,6 @@ $.ajaxSetup({
 });
 
 
-
 $(document).ready(function() {
     ////////////////////////////////////////////////////////////////////////  FUNCTIONS
     function map() {
@@ -39,7 +38,7 @@ $(document).ready(function() {
         return wmsLayer = L.tileLayer.wms(wmsurl, {
             layers: $("#variables").val(),
             // useCache: true,
-            crossOrigin: true,
+            // crossOrigin: true,
             format: 'image/png',
             transparent: true,
             opacity: $("#opacity").val(),
@@ -65,7 +64,7 @@ $(document).ready(function() {
         $("#legend").html(html);
     }
 
-    function getThreddswms(){
+    function getThreddswms() {
         $.ajax({
             url:'/apps/malaria/ajax/customsettings/',
             async: false,

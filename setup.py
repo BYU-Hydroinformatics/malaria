@@ -14,7 +14,7 @@ dependencies = []
 
 setup(
     name=release_package,
-    version='0.0.1',
+    version='1.0.0',
     tags='&quot;Health&quot;, &quot;Malaria&quot;, &quot;Forecast&quot;, &quot;Prediction&quot;, &quot;LDAS&quot;',
     description='An app for running disease spread models developed at John Hopkins University and using global datasets from NASA LDAS',
     long_description='',
