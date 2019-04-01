@@ -73,7 +73,6 @@ $(document).ready(function() {
             contentType: "application/json",
             method: 'POST',
             success: function(result) {
-                console.log(result);
                 wmsbase = result['threddsurl'] + 'LIS_HIST_';
                 return wmsbase;
                 },

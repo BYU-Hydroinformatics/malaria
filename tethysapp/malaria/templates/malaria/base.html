@@ -5,14 +5,14 @@
 {% load staticfiles %}
 
 {% block title %}{{ tethys_app.name }}{% endblock %}
-
-{% block app_icon %}
-  {# The path you provided in your app.py is accessible through the tethys_app.icon context variable #}
-  <img src="{% static tethys_app.icon %}">
-{% endblock %}
-
-{# The name you provided in your app.py is accessible through the tethys_app.name context variable #}
+{% block app_icon %}<img src="{% static tethys_app.icon %}">{% endblock %}
 {% block app_title %}{{ tethys_app.name }}{% endblock %}
+
+{% block header_buttons %}
+    <div class="header-button glyphicon-button" data-toggle="tooltip" data-placement="bottom" title="Recompute District Averages">
+        <a onclick="updateDistricts()"><span class="glyphicon glyphicon-refresh"></span></a>
+    </div>
+{% endblock %}
 
 {% block app_navigation_items %}
   <li class="title">App Navigation</li>
@@ -51,5 +51,6 @@
 
     <!-- App Specific JS Pages -->
     <script src="{% static 'malaria/js/informations.js' %}" type="text/javascript"></script>
+    <script src="{% static 'malaria/js/ajax.js' %}" type="text/javascript"></script>
     <script src="{% static 'malaria/js/main.js' %}" type="text/javascript"></script>
 {% endblock %}

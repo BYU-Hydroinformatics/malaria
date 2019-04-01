@@ -1,6 +1,10 @@
 from tethys_sdk.base import TethysAppBase, url_map_maker
 from tethys_sdk.app_settings import CustomSetting
 
+# todo figure out what timescale of data the app will need -> update the spatial averages functions
+# todo make the app animate the data with time?
+# todo make the app convert the netcdfs to geotiffs
+# todo get the rest of the boundaries shapefiles
 
 class Malaria(TethysAppBase):
     """
@@ -25,15 +29,22 @@ class Malaria(TethysAppBase):
         UrlMap = url_map_maker(self.root_url)
 
         url_maps = (
+            # PRIMARY NAVIGABLE PAGES
             UrlMap(
                 name='home',
                 url='malaria',
                 controller='malaria.controllers.home'
             ),
+            # AJAX PAGES
             UrlMap(
                 name='customsettings',
                 url='malaria/ajax/customsettings',
-                controller='malaria.controllersAJAX.customsettings'
+                controller='malaria.ajax.customsettings'
+            ),
+            UrlMap(
+                name='updatedistricts',
+                url='malaria/ajax/updatedistricts',
+                controller='malaria.ajax.refresh_district_averages'
             ),
         )
 
