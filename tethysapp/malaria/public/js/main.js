@@ -91,6 +91,33 @@ $(document).ready(function() {
     var controlsObj = makeControls();
     newLegend();
 
+    var drawnItems = new L.FeatureGroup().addTo(mapObj);      // FeatureGroup is to store editable layers
+    var drawControl = new L.Control.Draw({
+        edit: {
+            featureGroup: drawnItems,
+            edit: false,
+        },
+        draw: {
+            polyline: false,
+            circlemarker:false,
+            circle:false,
+            polygon:true,
+            rectangle:true,
+            point:false,
+        },
+    });
+    mapObj.addControl(drawControl);
+    mapObj.on("draw:drawstart ", function () {     // control what happens when the user draws things on the map
+        drawnItems.clearLayers();
+    });
+
+    mapObj.on(L.Draw.Event.CREATED, function (event) {
+        drawnItems.addLayer(event.layer);
+        L.Draw.Event.STOP;
+        getSpatialAverage(event);
+    });
+
+
     ////////////////////////////////////////////////////////////////////////  EVENT LISTENERS
 
     //  Listener for the variable picker menu (selectinput gizmo)

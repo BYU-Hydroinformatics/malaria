@@ -46,6 +46,11 @@ class Malaria(TethysAppBase):
                 url='malaria/ajax/updatedistricts',
                 controller='malaria.ajax.refresh_district_averages'
             ),
+            UrlMap(
+                name='updatedistricts',
+                url='malaria/ajax/getSpatialAverage',
+                controller='malaria.ajax.get_polygonaverages'
+            ),
         )
 
         return url_maps

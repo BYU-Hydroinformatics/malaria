@@ -12,9 +12,8 @@ def home(request):
     variables = gldas_variables()
     variable_opts = []
     for key in sorted(variables.keys()):
-        tuple1 = (key, variables[key])
-        variable_opts.append(tuple1)
-    del tuple1, variables
+        variable_opts.append((key, variables[key]))
+    del variables
     date_opts = available_dates()
     color_opts = wms_colors()
 
