@@ -33,9 +33,18 @@ def home(request):
         initial=[date_opts[0]],
     )
 
-    opacity = RangeSlider(
-        display_text='Layer Opacity',
-        name='opacity',
+    rasteropacity = RangeSlider(
+        display_text='LDAS Layer Opacity',
+        name='rasteropacity',
+        min=.4,
+        max=1,
+        step=.05,
+        initial=.8,
+    )
+
+    boundaryopacity = RangeSlider(
+        display_text='District Boundary Layer Opacity',
+        name='boundaryopacity',
         min=.4,
         max=1,
         step=.05,
@@ -43,7 +52,7 @@ def home(request):
     )
 
     colors = SelectInput(
-        display_text='Pick a Color',
+        display_text='Pick a Color Scale',
         name='colors',
         multiple=False,
         options=color_opts,
@@ -53,7 +62,8 @@ def home(request):
     context = {
         'variables': variables,
         'dates': dates,
-        'opacity': opacity,
+        'rasteropacity': rasteropacity,
+        'boundaryopacity': boundaryopacity,
         'colors': colors,
     }
 

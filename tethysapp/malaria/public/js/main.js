@@ -18,11 +18,12 @@ $(document).ready(function() {
     function map() {
         // create the map
         return L.map('map', {
-            zoom: 5.25,
-            minZoom: 1.25,
+            zoom: 6,
+            minZoom: 5,
+            maxZoom: 8,
             boxZoom: true,
-            maxBounds: L.latLngBounds(L.latLng(-100.0, -270.0), L.latLng(100.0, 270.0)),
-            center: [-9, -75.5],
+            maxBounds: L.latLngBounds(L.latLng(-15.0, -85.0), L.latLng(0.0, -65.0)),
+            center: [-8.5, -75.5],
         });
     }
 
@@ -33,7 +34,7 @@ $(document).ready(function() {
         return {"Basemap": L.layerGroup([Esri_WorldImagery, Esri_Imagery_Labels]).addTo(mapObj)}
     }
 
-    function newLayer() {
+    function newLdasLayer() {
         let wmsurl = wmsbase + $("#dates").val() + '.nc';
         return wmsLayer = L.tileLayer.wms(wmsurl, {
             layers: $("#variables").val(),
@@ -48,20 +49,24 @@ $(document).ready(function() {
         }).addTo(mapObj);
     }
 
+    function newDistrictsLayer() {
+        return boundarylayer = L.tileLayer.wms('https://tethys.byu.edu/geoserver/malariatracker/wms', {
+            layers: 'malariatracker:distritoloreto',
+            format: 'image/png',
+            transparent: true,
+        }).addTo(mapObj);
+    }
+
     function makeControls() {
-        return L.control.layers(basemapObj, {'GLDAS Layer': layerObj}).addTo(mapObj);
+        return L.control.layers(basemapObj, {'LDAS Layer': LdasLayerObj, 'District Boundaries': DistrictLayerObj}).addTo(mapObj);
     }
 
     function clearMap() {
-        controlsObj.removeLayer(layerObj);
-        mapObj.removeLayer(layerObj);
+        controlsObj.removeLayer(LdasLayerObj);
+        controlsObj.removeLayer(DistrictLayerObj);
+        mapObj.removeLayer(LdasLayerObj);
+        mapObj.removeLayer(DistrictLayerObj);
         mapObj.removeControl(controlsObj);
-    }
-
-    function newLegend() {
-        url = wmsbase + $("#dates").val() + '.nc' + "?REQUEST=GetLegendGraphic&LAYER=" + $("#variables").val() + "&PALETTE=" + $('#colors').val() + "&COLORSCALERANGE=" + bounds[$("#variables").val()];
-        html = '<img src="' + url + '" alt="legend" style="width:50%; height:325px;">';
-        $("#legend").html(html);
     }
 
     function getThreddswms() {
@@ -87,9 +92,18 @@ $(document).ready(function() {
     var wmsbase = getThreddswms();
     var mapObj = map();
     var basemapObj = basemaps();
-    var layerObj = newLayer();
+    var LdasLayerObj = newLdasLayer();
+    var DistrictLayerObj = newDistrictsLayer();
+    mapObj.removeLayer(LdasLayerObj);
     var controlsObj = makeControls();
-    newLegend();
+
+    const legend = L.control({position:'bottomleft'});
+    legend.onAdd = function() {
+        let div = L.DomUtil.create('div', 'legend');
+        let url = wmsbase + $("#dates").val() + '.nc' + "?REQUEST=GetLegendGraphic&LAYER=" + $("#variables").val() + "&PALETTE=" + $('#colors').val() + "&COLORSCALERANGE=" + bounds[$("#variables").val()];
+        div.innerHTML = '<img src="' + url + '" alt="legend" style="width:100%; float:right;">';
+        return div
+    };
 
     var drawnItems = new L.FeatureGroup().addTo(mapObj);      // FeatureGroup is to store editable layers
     var drawControl = new L.Control.Draw({
@@ -101,8 +115,8 @@ $(document).ready(function() {
             polyline: false,
             circlemarker:false,
             circle:false,
-            polygon:true,
-            rectangle:true,
+            polygon:false,
+            rectangle:false,
             point:false,
         },
     });
@@ -119,31 +133,47 @@ $(document).ready(function() {
 
 
     ////////////////////////////////////////////////////////////////////////  EVENT LISTENERS
+    $('#historicaltoggle').click(function() {
+        $('#historical_controls_wrapper').toggle();
+        if ($('#historicaltoggle').is(":checked")) {
+            LdasLayerObj.addTo(mapObj);
+            legend.addTo(mapObj);
+        } else {
+            mapObj.removeLayer(LdasLayerObj);
+        }
+    });
 
     //  Listener for the variable picker menu (selectinput gizmo)
     $("#dates").change(function () {
         clearMap();
-        layerObj = newLayer();
+        LdasLayerObj = newLdasLayer();
+        DistrictLayerObj = newDistrictsLayer();
         controlsObj = makeControls();
-        newLegend();
+        legend.addTo(mapObj);
     });
 
     $("#variables").change(function () {
         clearMap();
-        layerObj = newLayer();
+        LdasLayerObj = newLdasLayer();
+        DistrictLayerObj = newDistrictsLayer();
         controlsObj = makeControls();
-        newLegend();
+        legend.addTo(mapObj);
     });
 
-    $("#opacity").change(function () {
-        layerObj.setOpacity($('#opacity').val());
+    $("#rasteropacity").change(function () {
+        LdasLayerObj.setOpacity($('#rasteropacity').val());
+    });
+
+    $("#boundaryopacity").change(function () {
+        DistrictLayerObj.setOpacity($('#boundaryopacity').val());
     });
 
     $('#colors').change(function () {
         clearMap();
-        layerObj = newLayer();
+        LdasLayerObj = newLdasLayer();
+        DistrictLayerObj = newDistrictsLayer();
         controlsObj = makeControls();
-        newLegend();
+        legend.addTo(mapObj);
     });
 
 

@@ -15,12 +15,25 @@
 {% endblock %}
 
 {% block app_navigation_items %}
-  <li class="title">App Navigation</li>
-  {% gizmo select_input variables %}
-  {% gizmo select_input dates %}
-  {% gizmo select_input colors %}
-  {% gizmo range_slider opacity %}
-  <div id="legend" style="text-align: center"></div>
+    <li class="title">App Navigation</li>
+
+    {% gizmo range_slider boundaryopacity %}
+
+    <li><strong>View LDAS Data</strong></li>
+    <li>
+        <label class="switch">
+            <input type="checkbox" id="historicaltoggle">
+            <span class="slider round"></span>
+        </label>
+    </li>
+
+    <div id="historical_controls_wrapper" style="display: none;">
+        {% gizmo select_input variables %}
+        {% gizmo select_input dates %}
+        {% gizmo select_input colors %}
+        {% gizmo range_slider rasteropacity %}
+    </div>
+
 {% endblock %}
 
 {% block app_content %}
@@ -35,6 +48,9 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css" />
     <!-- styling for the leaflet draw plugin -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.2/leaflet.draw-src.css" />
+
+    <!-- Tabulator Style Sheet -->
+    <link href="https://unpkg.com/tabulator-tables@4.2.5/dist/css/tabulator.min.css" rel="stylesheet">
 
     <!-- App specific styling scripts -->
     <link href="{% static 'malaria/css/main.css' %}" rel="stylesheet"/>
@@ -51,6 +67,9 @@
     <script src="https://unpkg.com/esri-leaflet@2.2.3/dist/esri-leaflet.js" integrity="sha512-YZ6b5bXRVwipfqul5krehD9qlbJzc6KOGXYsDjU9HHXW2gK57xmWl2gU6nAegiErAqFXhygKIsWPKbjLPXVb2g==" crossorigin=""></script>
     <!-- allows you to use the leaflet draw plugin -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.2/leaflet.draw-src.js"></script>
+
+    <!-- Tabulator for tables -->
+    <script type="text/javascript" src="https://unpkg.com/tabulator-tables@4.2.5/dist/js/tabulator.min.js"></script>
 
     <!-- App Specific JS Pages -->
     <script src="{% static 'malaria/js/informations.js' %}" type="text/javascript"></script>

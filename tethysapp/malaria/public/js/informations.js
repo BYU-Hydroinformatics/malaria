@@ -1,4 +1,4 @@
-bounds = {
+const bounds = {
     'AvgSurfT_tavg': '263.06104,305.7848',
     'Greenness_inst': '0.0,1.0000001',
     'Qair_f_tavg': '0.004127764,0.020426948',
