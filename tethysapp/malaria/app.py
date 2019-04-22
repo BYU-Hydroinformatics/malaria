@@ -13,7 +13,7 @@ class Malaria(TethysAppBase):
 
     name = 'Malaria Spread Predictor'
     index = 'malaria:home'
-    icon = 'malaria/images/icon.gif'
+    icon = 'malaria/images/icon2.png'
     package = 'malaria'
     root_url = 'malaria'
     color = '#f53636'
