@@ -73,7 +73,6 @@ $(document).ready(function() {
         for (property in featureproperties) {
             $("#districtinfo").append('<li>' + property + ': ' + String(featureproperties[property]) + '</li>');
         }
-        return currentdistrict
     }
 
 
