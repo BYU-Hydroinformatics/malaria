@@ -63,9 +63,6 @@ $(document).ready(function() {
                     case riskLevels[feature.properties.ubigeo] > 0: return {color: '#00ff00'};
                 }
             },
-            //     "weight": 3,
-            //     "opacity": 0.65
-            // }
         }).addTo(mapObj);
     }
 
