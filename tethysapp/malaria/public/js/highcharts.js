@@ -8,7 +8,7 @@ Highcharts.setOptions({
         downloadSVG: "Download SVG vector image",
         downloadXLS: "Download XLS",
         loading: "Loading Data",
-        noData: "No Data"
+        noData: "Please Select A District"
     },
 });
 

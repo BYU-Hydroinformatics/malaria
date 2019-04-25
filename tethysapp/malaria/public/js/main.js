@@ -69,11 +69,11 @@ $(document).ready(function() {
     }
 
     function showDistrictStats(featureproperties) {
-        let name = featureproperties.NOMBDIST;
-        $("#districtinfo").html('<h3>' + name + '</h3>');
+        $("#districtinfo").html('<h2 style="text-align: center">' + featureproperties.NOMBDIST + '</h2>');
         for (property in featureproperties) {
-            $("#districtinfo").append('<li>' + property + ': ' + featureproperties.property + '</li>');
+            $("#districtinfo").append('<li>' + property + ': ' + String(featureproperties[property]) + '</li>');
         }
+        return currentdistrict
     }
 
 
@@ -141,32 +141,6 @@ $(document).ready(function() {
         div.innerHTML = '<img src="' + url + '" alt="legend" style="width:100%; float:right;">';
         return div
     };
-
-    var drawnItems = new L.FeatureGroup().addTo(mapObj);      // FeatureGroup is to store editable layers
-    var drawControl = new L.Control.Draw({
-        edit: {
-            featureGroup: drawnItems,
-            edit: false,
-        },
-        draw: {
-            polyline: false,
-            circlemarker:false,
-            circle:false,
-            polygon:false,
-            rectangle:false,
-            point:false,
-        },
-    });
-    mapObj.addControl(drawControl);
-    mapObj.on("draw:drawstart ", function () {     // control what happens when the user draws things on the map
-        drawnItems.clearLayers();
-    });
-
-    mapObj.on(L.Draw.Event.CREATED, function (event) {
-        drawnItems.addLayer(event.layer);
-        L.Draw.Event.STOP;
-        getSpatialAverage(event);
-    });
 
 
     ////////////////////////////////////////////////////////////////////////  EVENT LISTENERS

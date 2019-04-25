@@ -42,15 +42,6 @@ def home(request):
         initial=.8,
     )
 
-    boundaryopacity = RangeSlider(
-        display_text='District Boundary Layer Opacity',
-        name='boundaryopacity',
-        min=.4,
-        max=1,
-        step=.05,
-        initial=.8,
-    )
-
     colors = SelectInput(
         display_text='Pick a Color Scale',
         name='colors',
@@ -63,8 +54,18 @@ def home(request):
         'variables': variables,
         'dates': dates,
         'rasteropacity': rasteropacity,
-        'boundaryopacity': boundaryopacity,
         'colors': colors,
     }
 
     return render(request, 'malaria/home.html', context)
+
+
+@login_required()
+def reports(request):
+    """
+    Controller for the app home page.
+    """
+    context = {
+    }
+
+    return render(request, 'malaria/reports.html', context)
