@@ -55,16 +55,27 @@ $(document).ready(function() {
     function newDistrictsLayer() {
         return L.geoJSON(loretoboundaries, {
             style: function(feature) {
-                console.log(feature.properties.ubigeo);
-                console.log(riskLevels[feature.properties.ubigeo]);
                 switch (true) {
                     case riskLevels[feature.properties.ubigeo] > .8: return {color: '#ff0000'};
                     case riskLevels[feature.properties.ubigeo] > .6: return {color: '#ffd82f'};
-                    case riskLevels[feature.properties.ubigeo] > 0: return {color: '#00ff00'};
+                    case riskLevels[feature.properties.ubigeo] >= 0: return {color: '#00ff00'};
                 }
+            },
+            onEachFeature: function (feature, layer) {
+                layer.bindPopup(feature.properties.NOMBDIST);
+                layer.on('click', function(event){showDistrictStats(event.target.feature.properties)});
             },
         }).addTo(mapObj);
     }
+
+    function showDistrictStats(featureproperties) {
+        let name = featureproperties.NOMBDIST;
+        $("#districtinfo").html('<h3>' + name + '</h3>');
+        for (property in featureproperties) {
+            $("#districtinfo").append('<li>' + property + ': ' + featureproperties.property + '</li>');
+        }
+    }
+
 
     function makeControls() {
         return L.control.layers(basemapObj, {'LDAS Layer': LdasLayerObj, 'District Boundaries': DistrictLayerObj}).addTo(mapObj);
@@ -160,7 +171,6 @@ $(document).ready(function() {
 
     ////////////////////////////////////////////////////////////////////////  EVENT LISTENERS
     $('#historicaltoggle').click(function() {
-        $('#historical_controls_wrapper').toggle();
         if ($('#historicaltoggle').is(":checked")) {
             LdasLayerObj.addTo(mapObj);
             legend.addTo(mapObj);
