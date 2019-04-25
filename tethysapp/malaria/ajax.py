@@ -14,7 +14,16 @@ def customsettings(request):
 
 
 @login_required()
-def refresh_district_averages(request):
+def getcurrentrisks(request):
+    """
+    sends the custom settings for the app
+    """
+    from .tools import definecurrentrisks
+    return JsonResponse(definecurrentrisks())
+
+
+@login_required()
+def update_dist_averages(request):
     """
     gets called if the user chooses to recalculate the district averages manually
     """

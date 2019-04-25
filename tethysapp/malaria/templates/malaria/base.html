@@ -19,13 +19,15 @@
 
     {% gizmo range_slider boundaryopacity %}
 
-    <li><strong>View LDAS Data</strong></li>
-    <li>
-        <label class="switch">
-            <input type="checkbox" id="historicaltoggle">
-            <span class="slider round"></span>
-        </label>
-    </li>
+    <li><div id="ldaswrapper" style="width: 100%; margin-left: auto; margin-right: auto">
+        <div id="label" style="float: left; width: 80%"><b>View LDAS Data</b></div>
+        <div id="switch" style="float: left; width: 20%;">
+            <label class="switch">
+                <input type="checkbox" id="historicaltoggle">
+                <span class="slider round"></span>
+            </label>
+        </div>
+    </div></li>
 
     <div id="historical_controls_wrapper" style="display: none;">
         {% gizmo select_input variables %}
@@ -72,6 +74,7 @@
     <script type="text/javascript" src="https://code.highcharts.com/highcharts.js"></script>
     <!-- Use this to export data from highcharts as csv, jpeg, etc -->
     <script type="text/javascript" src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
     <!-- Use this to show loading functions and placeholders -->
     <script src="https://code.highcharts.com/modules/no-data-to-display.js"></script>
 
@@ -80,6 +83,7 @@
 
     <!-- App Specific JS Pages -->
     <script src="{% static 'malaria/js/informations.js' %}" type="text/javascript"></script>
+    <script src="{% static 'malaria/js/loreto.js' %}" type="text/javascript"></script>
     <script src="{% static 'malaria/js/ajax.js' %}" type="text/javascript"></script>
     <script src="{% static 'malaria/js/highcharts.js' %}" type="text/javascript"></script>
     <script src="{% static 'malaria/js/main.js' %}" type="text/javascript"></script>

@@ -93,3 +93,23 @@ def compute_district_averages():
     json.dump(path, districtaverages)
 
     return districtaverages
+
+
+def definecurrentrisks():
+    """
+    reads the most recent csv and creates a dictionary of the form {ubigeo#: risk}
+    """
+    import pandas
+    import os
+    from .app import Malaria as App
+
+    path = App.get_app_workspace().path
+    path = os.path.join(path, 'output.csv')
+    df = pandas.read_csv(path)[['ubigeo', 'risk']].to_dict()
+    risk = {}
+
+    for row in df['ubigeo']:
+        risk[df['ubigeo'][row]] = df['risk'][row]
+    print(risk)
+
+    return risk

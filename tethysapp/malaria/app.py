@@ -3,8 +3,8 @@ from tethys_sdk.app_settings import CustomSetting
 
 # todo figure out what timescale of data the app will need -> update the spatial averages functions
 # todo make the app animate the data with time?
-# todo make the app convert the netcdfs to geotiffs
-# todo get the rest of the boundaries shapefiles
+# todo fix the styling of the polygons to be colored by current risk level
+
 
 class Malaria(TethysAppBase):
     """
@@ -42,9 +42,14 @@ class Malaria(TethysAppBase):
                 controller='malaria.ajax.customsettings'
             ),
             UrlMap(
+                name='getcurrentrisks',
+                url='malaria/ajax/getcurrentrisks',
+                controller='malaria.ajax.getcurrentrisks'
+            ),
+            UrlMap(
                 name='updatedistricts',
                 url='malaria/ajax/updatedistricts',
-                controller='malaria.ajax.refresh_district_averages'
+                controller='malaria.ajax.update_dist_averages'
             ),
             UrlMap(
                 name='updatedistricts',

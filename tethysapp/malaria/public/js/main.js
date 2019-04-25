@@ -25,8 +25,8 @@ $(document).ready(function() {
             minZoom: 5,
             maxZoom: 8,
             boxZoom: true,
-            maxBounds: L.latLngBounds(L.latLng(-15.0, -85.0), L.latLng(0.0, -65.0)),
-            center: [-8.5, -75.5],
+            maxBounds: L.latLngBounds(L.latLng(-20.0, -85.0), L.latLng(5.0, -65.0)),
+            center: [-5, -74.5],
         });
     }
 
@@ -53,10 +53,19 @@ $(document).ready(function() {
     }
 
     function newDistrictsLayer() {
-        return boundarylayer = L.tileLayer.wms('https://tethys.byu.edu/geoserver/malariatracker/wms', {
-            layers: 'malariatracker:distritoloreto',
-            format: 'image/png',
-            transparent: true,
+        return L.geoJSON(loretoboundaries, {
+            style: function(feature) {
+                console.log(feature.properties.ubigeo);
+                console.log(riskLevels[feature.properties.ubigeo]);
+                switch (true) {
+                    case riskLevels[feature.properties.ubigeo] > .8: return {color: '#ff0000'};
+                    case riskLevels[feature.properties.ubigeo] > .6: return {color: '#ffd82f'};
+                    case riskLevels[feature.properties.ubigeo] > 0: return {color: '#00ff00'};
+                }
+            },
+            //     "weight": 3,
+            //     "opacity": 0.65
+            // }
         }).addTo(mapObj);
     }
 
@@ -89,10 +98,27 @@ $(document).ready(function() {
         // return 'http://127.0.0.1:7000/thredds/wms/testAll/malaria/LIS_HIST_'
     }
 
+    function getCurrentRisks() {
+        $.ajax({
+            url:'/apps/malaria/ajax/getcurrentrisks/',
+            async: false,
+            data: '',
+            dataType: 'json',
+            contentType: "application/json",
+            method: 'POST',
+            success: function(result) {
+                riskLevels = result;
+                },
+            });
+    }
+
     ////////////////////////////////////////////////////////////////////////  INITIALIZE ON DOCUMENT READY
 
     //  Load initial map data as soon as the page is ready
-    var wmsbase = getThreddswms();
+    let wmsbase;
+    getThreddswms();
+    let riskLevels;
+    getCurrentRisks();
     var mapObj = map();
     var basemapObj = basemaps();
     var LdasLayerObj = newLdasLayer();
@@ -168,7 +194,7 @@ $(document).ready(function() {
     });
 
     $("#boundaryopacity").change(function () {
-        DistrictLayerObj.setOpacity($('#boundaryopacity').val());
+        DistrictLayerObj.setParams({style: {"color": '#ff7800'}});
     });
 
     $('#colors').change(function () {
