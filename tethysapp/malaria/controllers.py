@@ -58,14 +58,3 @@ def home(request):
     }
 
     return render(request, 'malaria/home.html', context)
-
-
-@login_required()
-def reports(request):
-    """
-    Controller for the app home page.
-    """
-    context = {
-    }
-
-    return render(request, 'malaria/reports.html', context)
