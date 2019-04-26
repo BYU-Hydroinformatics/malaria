@@ -43,7 +43,9 @@
                     <h5 class="modal-title" id="districtreport-modal-label">District Report</h5>
                 </div>
                 <div class="modal-body">
-                    <p>Please pick a district before trying to generate a report</p>
+                    <div id="districtreport">
+                        <p>Please pick a district before trying to generate a report</p>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
@@ -68,8 +70,8 @@
     {% gizmo select_input colors %}
     {% gizmo range_slider rasteropacity %}
 
-    <a data-toggle="modal" data-target="#generalreport-modal" role="button" class="btn btn-danger">General Report</a><br>
-    <a id="districtreport" data-toggle="modal" data-target="#districtreport-modal" role="button" class="btn btn-danger">District Report</a>
+    <a data-toggle="modal" data-target="#generalreport-modal" role="button" class="btn btn-danger btn-block">General Report</a>
+    <a data-toggle="modal" data-target="#districtreport-modal" role="button" class="btn btn-danger btn-block">District Report</a>
 
 {% endblock %}
 

@@ -16,7 +16,7 @@ $.ajaxSetup({
 $(document).ready(function() {
     ////////////////////////////////////////////////////////////////////////  INITAL DOCUMENT SETUP
     placeholder();
-    
+
     ////////////////////////////////////////////////////////////////////////  FUNCTIONS
     function map() {
         // create the map
@@ -54,30 +54,41 @@ $(document).ready(function() {
 
     function newDistrictsLayer() {
         return L.geoJSON(loretoboundaries, {
-            style: function(feature) {
+            style: function (feature) {
                 switch (true) {
-                    case riskLevels[feature.properties.ubigeo] > .8: return {color: '#ff0000'};
-                    case riskLevels[feature.properties.ubigeo] > .6: return {color: '#ffd82f'};
-                    case riskLevels[feature.properties.ubigeo] >= 0: return {color: '#00ff00'};
+                    case riskLevels[feature.properties.ubigeo] > .8:
+                        return {color: '#ff0000'};
+                    case riskLevels[feature.properties.ubigeo] > .6:
+                        return {color: '#ffd82f'};
+                    case riskLevels[feature.properties.ubigeo] >= 0:
+                        return {color: '#00ff00'};
                 }
             },
             onEachFeature: function (feature, layer) {
                 layer.bindPopup(feature.properties.NOMBDIST);
-                layer.on('click', function(event){showDistrictStats(event.target.feature.properties)});
+                layer.on('click', function (event) {
+                    showDistrictStats(event.target.feature.properties)
+                });
             },
         }).addTo(mapObj);
     }
 
     function showDistrictStats(featureproperties) {
         $("#districtinfo").html('<h2 style="text-align: center">' + featureproperties.NOMBDIST + '</h2>');
+        let property;
         for (property in featureproperties) {
             $("#districtinfo").append('<li>' + property + ': ' + String(featureproperties[property]) + '</li>');
         }
+        $("#districtreport").html($("#districtinfo").clone());
+        $("#districtreport").append($("#highchart").clone())
     }
 
 
     function makeControls() {
-        return L.control.layers(basemapObj, {'LDAS Layer': LdasLayerObj, 'District Boundaries': DistrictLayerObj}).addTo(mapObj);
+        return L.control.layers(basemapObj, {
+            'LDAS Layer': LdasLayerObj,
+            'District Boundaries': DistrictLayerObj
+        }).addTo(mapObj);
     }
 
     function clearMap() {
@@ -90,33 +101,33 @@ $(document).ready(function() {
 
     function getThreddswms() {
         $.ajax({
-            url:'/apps/malaria/ajax/customsettings/',
+            url: '/apps/malaria/ajax/customsettings/',
             async: false,
             data: '',
             dataType: 'json',
             contentType: "application/json",
             method: 'POST',
-            success: function(result) {
+            success: function (result) {
                 wmsbase = result['threddsurl'] + 'LIS_HIST_';
                 return wmsbase;
-                },
-            });
+            },
+        });
         return wmsbase;
         // return 'http://127.0.0.1:7000/thredds/wms/testAll/malaria/LIS_HIST_'
     }
 
     function getCurrentRisks() {
         $.ajax({
-            url:'/apps/malaria/ajax/getcurrentrisks/',
+            url: '/apps/malaria/ajax/getcurrentrisks/',
             async: false,
             data: '',
             dataType: 'json',
             contentType: "application/json",
             method: 'POST',
-            success: function(result) {
+            success: function (result) {
                 riskLevels = result;
-                },
-            });
+            },
+        });
     }
 
     ////////////////////////////////////////////////////////////////////////  INITIALIZE ON DOCUMENT READY
@@ -133,8 +144,8 @@ $(document).ready(function() {
     mapObj.removeLayer(LdasLayerObj);
     var controlsObj = makeControls();
 
-    const legend = L.control({position:'bottomleft'});
-    legend.onAdd = function() {
+    const legend = L.control({position: 'bottomleft'});
+    legend.onAdd = function () {
         let div = L.DomUtil.create('div', 'legend');
         let url = wmsbase + $("#dates").val() + '.nc' + "?REQUEST=GetLegendGraphic&LAYER=" + $("#variables").val() + "&PALETTE=" + $('#colors').val() + "&COLORSCALERANGE=" + bounds[$("#variables").val()];
         div.innerHTML = '<img src="' + url + '" alt="legend" style="width:100%; float:right;">';
@@ -143,7 +154,7 @@ $(document).ready(function() {
 
 
     ////////////////////////////////////////////////////////////////////////  EVENT LISTENERS
-    $('#historicaltoggle').click(function() {
+    $('#historicaltoggle').click(function () {
         if ($('#historicaltoggle').is(":checked")) {
             LdasLayerObj.addTo(mapObj);
             legend.addTo(mapObj);
@@ -173,10 +184,6 @@ $(document).ready(function() {
         LdasLayerObj.setOpacity($('#rasteropacity').val());
     });
 
-    $("#boundaryopacity").change(function () {
-        DistrictLayerObj.setParams({style: {"color": '#ff7800'}});
-    });
-
     $('#colors').change(function () {
         clearMap();
         LdasLayerObj = newLdasLayer();
@@ -184,6 +191,5 @@ $(document).ready(function() {
         controlsObj = makeControls();
         legend.addTo(mapObj);
     });
-
 
 });

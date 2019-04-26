@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from tethys_sdk.gizmos import SelectInput, RangeSlider
 from .model import gldas_variables, available_dates, wms_colors
 
+
 @login_required()
 def home(request):
     """
