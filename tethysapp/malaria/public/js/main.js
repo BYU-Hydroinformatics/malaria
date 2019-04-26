@@ -80,7 +80,19 @@ $(document).ready(function() {
             $("#districtinfo").append('<li>' + property + ': ' + String(featureproperties[property]) + '</li>');
         }
         $("#districtreport").html($("#districtinfo").clone());
-        $("#districtreport").append($("#highchart").clone())
+
+        $.ajax({
+            url: '/apps/malaria/ajax/historicriskplot/',
+            async: true,
+            data: JSON.stringify({'ubigeo': featureproperties.ubigeo}),
+            dataType: 'json',
+            contentType: "application/json",
+            method: 'POST',
+            success: function (result) {
+                historicRiskPlot(result);
+                $("#districtreport").append($("#highchart").clone())
+            },
+        });
     }
 
 

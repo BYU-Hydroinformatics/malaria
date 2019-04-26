@@ -39,12 +39,17 @@ class Malaria(TethysAppBase):
             UrlMap(
                 name='customsettings',
                 url='malaria/ajax/customsettings',
-                controller='malaria.ajax.customsettings'
+                controller='malaria.ajax.get_customsettings'
+            ),
+            UrlMap(
+                name='historicriskplot',
+                url='malaria/ajax/historicriskplot',
+                controller='malaria.ajax.get_historicriskplot'
             ),
             UrlMap(
                 name='getcurrentrisks',
                 url='malaria/ajax/getcurrentrisks',
-                controller='malaria.ajax.getcurrentrisks'
+                controller='malaria.ajax.get_currentrisks'
             ),
         )
 
