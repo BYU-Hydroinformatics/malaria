@@ -65,23 +65,20 @@ function historicRiskPlot(data) {
             {
                 data: data['highrisk'],
                 type: "area",
-                name: "Nivel Maximo",
+                name: "High Risk",
                 color: 'red',
-                fillOpacity: '50%',
                 },
             {
                 data: data['mediumrisk'],
                 type: "area",
-                name: "Nivel Minimo",
+                name: "Medium Risk",
                 color: 'yellow',
-                fillOpacity: '50%',
                 },
             {
                 data: data['lowrisk'],
                 type: "area",
-                name: "Nivel Minimo",
+                name: "Low Risk",
                 color: 'green',
-                fillOpacity: '50%',
                 },
             {
                 data: data['historical'],
