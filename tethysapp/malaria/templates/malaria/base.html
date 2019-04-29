@@ -56,8 +56,16 @@
 {% endblock %}
 
 {% block app_navigation_items %}
-    <li class="title">Map Controls and Report Links</li>
+    {% url 'malaria:home' as home_url %}
+    {% url 'malaria:methods' as methods_url %}
 
+    <li class="title">App Navigation and Controls</li>
+
+    <li class="{% if request.path == home_url %}active{% endif %}"><a href="{{ home_url }}">Risk Mapping and Reports</a></li>
+    <li class="{% if request.path == methods_url %}active{% endif %}"><a href="{{ methods_url }}">Analysis Methods</a></li>
+
+    {% if request.path == home_url %}
+    <li class="title">Map Controls and Report Links</li>
     <li class="title">
         Toggle Map LDAS Data
         <label class="switch">
@@ -69,9 +77,16 @@
     {% gizmo select_input dates %}
     {% gizmo select_input colors %}
     {% gizmo range_slider rasteropacity %}
+    <a data-toggle="modal" data-target="#generalreport-modal" role="button" class="btn btn-primary btn-block">General Report</a>
+    <a data-toggle="modal" data-target="#districtreport-modal" role="button" class="btn btn-primary btn-block">District Report</a>
+    {% endif %}
 
-    <a data-toggle="modal" data-target="#generalreport-modal" role="button" class="btn btn-danger btn-block">General Report</a>
-    <a data-toggle="modal" data-target="#districtreport-modal" role="button" class="btn btn-danger btn-block">District Report</a>
+    {% if request.path == methods_url %}
+    <li class="title">Related Links</li>
+    <a data-toggle="modal" data-target="" role="button" class="btn btn-primary btn-block">Publications</a>
+    <a data-toggle="modal" data-target="" role="button" class="btn btn-primary btn-block">Other links you might want</a>
+    {% endif %}
+
 
 {% endblock %}
 

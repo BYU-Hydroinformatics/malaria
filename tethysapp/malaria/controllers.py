@@ -59,3 +59,14 @@ def home(request):
     }
 
     return render(request, 'malaria/home.html', context)
+
+
+@login_required()
+def methods(request):
+    """
+    Controller for the app methodology page.
+    """
+
+    context = {}
+
+    return render(request, 'malaria/methods.html', context)
