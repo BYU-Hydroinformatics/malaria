@@ -43,6 +43,7 @@ def historicalriskplot(ubigeo):
         'mediumrisk': [[int(first), .8], [int(last), .8]],
         'lowrisk': [[int(first), .6], [int(last), .6]],
         'historical': [],
+        'epiweek': int(last),
     }
 
     for row in df.iterrows():

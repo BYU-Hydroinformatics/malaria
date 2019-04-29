@@ -63,3 +63,9 @@ def wms_colors():
         ('ALG 2', 'alg2'),
         ('Ferret', 'ferret'),
         ]
+
+
+def ubigeo_to_distname():
+    return {
+
+    }

@@ -50,16 +50,17 @@ function historicRiskPlot(data) {
     chart = Highcharts.chart('highchart', {
         title: {
             align: "center",
-            text: 'Historical Risk for District ' + data['ubigeo']
+            text: '2019 Outbreak Probability (Epiweek ' + data['epiweek'] + ') for District ' + data['ubigeo']
         },
         xAxis: {
             type: 'linear',
             title: {text: "2019 Epidemiological Week (Epiweek)"}
         },
         yAxis: {
-            title: {text: 'Risk'},
+            title: {text: 'Probability of Outbreak'},
             min: 0,
-            max: 1
+            max: 1,
+            tickInterval: .2
         },
         series: [
             {
