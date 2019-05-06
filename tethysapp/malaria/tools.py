@@ -37,14 +37,7 @@ def historicalriskplot(ubigeo):
     last = df['epiweek'].max()
 
     # you have to manually make everything an integer because the numpy.int64 type is not json serializable
-    chartdata = {
-        'ubigeo': ubigeo,
-        'highrisk': [[int(first), 1], [int(last), 1]],
-        'mediumrisk': [[int(first), .8], [int(last), .8]],
-        'lowrisk': [[int(first), .6], [int(last), .6]],
-        'historical': [],
-        'epiweek': int(last),
-    }
+    chartdata = {'ubigeo': ubigeo, 'historical': [], 'epiweek': int(last)}
 
     for row in df.iterrows():
         chartdata['historical'].append([int(row[1][1]), row[1][2]])

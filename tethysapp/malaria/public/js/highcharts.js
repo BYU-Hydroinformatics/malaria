@@ -60,33 +60,46 @@ function historicRiskPlot(data) {
             title: {text: 'Probability of Outbreak'},
             min: 0,
             max: 1,
-            tickInterval: .2
+            tickInterval: .2,
+            lineColor: 'transparent',
+            gridLineWidth: 0,
+            plotBands: [
+                {
+                    color: 'red',
+                    from: .8,
+                    to: 1,
+                    label: {
+                        text: 'High Risk',
+                        align: 'left',
+                    }
+                },
+                {
+                    color: 'yellow',
+                    from: .6,
+                    to: .8,
+                    label: {
+                        text: 'Medium Risk',
+                        align: 'left',
+                    }
+                },
+                {
+                    color: 'green',
+                    from: 0,
+                    to: .6,
+                    label: {
+                        text: 'Low Risk',
+                        align: 'left',
+                    }
+                },
+            ]
         },
         series: [
-            {
-                data: data['highrisk'],
-                type: "area",
-                name: "High Risk",
-                color: 'red',
-                },
-            {
-                data: data['mediumrisk'],
-                type: "area",
-                name: "Medium Risk",
-                color: 'yellow',
-                },
-            {
-                data: data['lowrisk'],
-                type: "area",
-                name: "Low Risk",
-                color: 'green',
-                },
             {
                 data: data['historical'],
                 type: "line",
                 name: 'Historical Risk',
                 color: 'black'
-                }
+            }
         ],
         chart: {
             animation: true,
