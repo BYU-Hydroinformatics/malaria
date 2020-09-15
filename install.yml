@@ -1,0 +1,13 @@
+version: 1.0.0
+name: malaria
+
+requirements:
+  conda:
+    channels:
+      - conda-forge
+    packages:
+      - rasterio
+      - fiona
+      - gdal
+      - numpy
+      - netcdf4

@@ -1,35 +1,27 @@
-import os
-import sys
+
 from setuptools import setup, find_packages
-from tethys_apps.app_installation import custom_develop_command, custom_install_command
+from tethys_apps.app_installation import find_resource_files
 
 # -- Apps Definition -- #
 app_package = 'malaria'
 release_package = 'tethysapp-' + app_package
-app_class = 'malaria.app:Malaria'
-app_package_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'tethysapp', app_package)
 
 # -- Python Dependencies -- #
-dependencies = ['rasterio', 'fiona', 'gdal', 'numpy', 'netcdf4']
+dependencies = []
 
 setup(
     name=release_package,
-    version='1.0.0',
-    tags='&quot;Health&quot;, &quot;Malaria&quot;, &quot;Forecast&quot;, &quot;Prediction&quot;, &quot;LDAS&quot;',
+    version='0.0.4',
     description='An app for running disease spread models developed at John Hopkins University and using global datasets from NASA LDAS',
     long_description='',
-    keywords='',
+    keywords='Tethys,App,Services,Cool',
     author='Riley Hales',
     author_email='',
-    url='',
-    license='',
-    packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
-    namespace_packages=['tethysapp', 'tethysapp.' + app_package],
+    url='https://github.com/BYU-Hydroinformatics/malaria',
+    license='BSD 3-Clause License',
+    packages=find_namespace_packages(),
+    package_data={'': resource_files},
     include_package_data=True,
     zip_safe=False,
     install_requires=dependencies,
-    cmdclass={
-        'install': custom_install_command(app_package, app_package_dir, dependencies),
-        'develop': custom_develop_command(app_package, app_package_dir, dependencies)
-    }
 )
